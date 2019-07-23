@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddStudent">
+
+    <include layout="@layout/title_layout"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/image" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/fill_name"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="填写你的姓名" />
+
+    <EditText
+        android:id="@+id/fill_id"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="填写你的学号" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/select_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="请选择你的年级"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/grade_spinner"
+            android:layout_toRightOf="@id/select_grade"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="24dp"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/select_major"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="请选择你的专业"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/major_spinner"
+            android:layout_toRightOf="@id/select_major"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="24dp"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/save_message"
+        android:layout_marginLeft="45dp"
+        android:text="保存"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
