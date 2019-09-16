@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sqlitetest">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--调用相机权限-->
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 调用相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -14,17 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Fix_detail"></activity>
-        <activity android:name=".FindStudent" />
-        <activity android:name=".ShowStudent" />
-        <activity android:name=".AddStudent" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.Fix_password"></activity>
+        <activity android:name=".Activity.Show_Student" />
+        <activity android:name=".Activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.Fix_detail" />
+        <activity android:name=".Activity.FindStudent" />
+        <activity android:name=".Activity.ShowStudent" />
+        <activity android:name=".Activity.AddStudent" />
+        <activity android:name=".Activity.MainActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.hxd.pictest.fileprovider"

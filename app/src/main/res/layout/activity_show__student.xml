@@ -45,18 +45,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="你的学号"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/get_id"
-        android:textSize="18sp"
-        android:text="2231"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="45dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="你的学号"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/get_id"
+            android:textSize="18sp"
+            android:text="2231"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -96,23 +96,37 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="45dp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/fix_mess"
         android:text="修改信息"
         android:textSize="18sp"
         android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/buttonbackground"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <Button
-        android:id="@+id/delete_student"
-        android:text="删除学生"
+        android:id="@+id/fix_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/buttonbackground"
+        android:text="修改密码"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/quit_log"
+        android:text="退出登录"
         android:textSize="18sp"
         android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/buttonbackground"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"

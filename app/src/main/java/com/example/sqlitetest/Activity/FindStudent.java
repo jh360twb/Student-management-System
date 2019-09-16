@@ -1,9 +1,8 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.sqlitetest.Adapter.find_Adapter;
-import com.example.sqlitetest.Table.Student;
+import com.example.sqlitetest.R;
+import com.example.sqlitetest.Bean.Student;
 
 import org.litepal.crud.DataSupport;
 
@@ -44,13 +44,18 @@ public class FindStudent extends BaseActivity implements View.OnClickListener {
     }
     private void init() {
         ////litepal的查询操作
-
+        findStudentList.clear();
         String mess = fill_id.getText().toString();
+        //使用两次查询实现同时对学号和姓名的搜索
         List<Student> findStudentList1 = DataSupport.where("student_number like ?","%"+mess+"%").find(Student.class);
-        if (findStudentList1.size() == 0){
-            Toast.makeText(context, "没有找到类似学号的学生", Toast.LENGTH_SHORT).show();
+        List<Student> findStudentList2 = DataSupport.where("name like ?","%"+mess+"%").find(Student.class);
+        if (findStudentList1.size() ==0 && findStudentList2.size()== 0 ){
+            Toast.makeText(context, "没有找到类似学号或姓名的学生", Toast.LENGTH_SHORT).show();
         }else {
             for (Student student : findStudentList1) {
+                findStudentList.add(student);
+            }
+            for (Student student : findStudentList2) {
                 findStudentList.add(student);
             }
         }
@@ -77,7 +82,6 @@ public class FindStudent extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.find_id:
                 //点击查询
-
                 init();
                 break;
             case R.id.back_:

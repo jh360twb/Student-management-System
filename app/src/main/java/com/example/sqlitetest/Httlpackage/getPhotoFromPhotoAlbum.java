@@ -1,4 +1,4 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Httlpackage;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

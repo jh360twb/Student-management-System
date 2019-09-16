@@ -13,9 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sqlitetest.ShowStudent;
+import com.example.sqlitetest.Activity.ShowStudent;
 import com.example.sqlitetest.R;
-import com.example.sqlitetest.Table.Student;
+import com.example.sqlitetest.Bean.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,6 @@ public class list_Adapter extends RecyclerView.Adapter<list_Adapter.ViewHolder> 
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override

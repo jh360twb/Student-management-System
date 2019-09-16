@@ -1,4 +1,4 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 
 import android.app.Activity;

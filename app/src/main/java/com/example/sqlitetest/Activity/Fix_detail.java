@@ -1,4 +1,4 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,24 +15,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.sqlitetest.Table.Student;
+import com.example.sqlitetest.R;
+import com.example.sqlitetest.Bean.Student;
+import com.example.sqlitetest.Httlpackage.getPhotoFromPhotoAlbum;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.File;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static com.example.sqlitetest.FindStudent.findStudentList;
-import static com.example.sqlitetest.MainActivity.list_adapter;
-import static com.example.sqlitetest.MainActivity.students;
+import static com.example.sqlitetest.Activity.FindStudent.findStudentList;
+import static com.example.sqlitetest.Activity.Login.flag2_log;
+import static com.example.sqlitetest.Activity.MainActivity.list_adapter;
+import static com.example.sqlitetest.Activity.MainActivity.students;
 
 public class Fix_detail extends BaseActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks {
     private static final String[] spinner_arr1 = {"大一", "大二", "大三", "大四"};
@@ -54,26 +54,38 @@ public class Fix_detail extends BaseActivity implements View.OnClickListener,Eas
     private String cameraSavePath;//拍照照片路径
     private String path;//原来传过来的照片路径
     Student student1;
+    Student student;
     private Uri uri;//照片uri
     String mess;
     int selection;//spinner默认值
     int selection1;
     String photoPath = path;//修改之后的photopath,先给他一个初值就是原来的那个path
+    String student_num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fix_detail);
         Intent intent = getIntent();
-        int position1 = intent.getIntExtra("position2", -1);
-        path = getIntent().getStringExtra("path");
-        if (position1 != -1) {
-            student1 = findStudentList.get(position1);
-        }else{
-            position1 = intent.getIntExtra("position3", -1);
-            student1 = students.get(position1);
-        }
 
+        if(flag2_log==1) {
+            int position1 = intent.getIntExtra("position2", -1);
+            path = getIntent().getStringExtra("path");
+            if (position1 != -1) {
+                student1 = findStudentList.get(position1);
+            } else {
+                position1 = intent.getIntExtra("position3", -1);
+                student1 = students.get(position1);
+            }
+        }
+        else {
+
+            student_num = getIntent().getStringExtra("number_2");
+            List<Student> studentList = DataSupport.where("student_number = ?", student_num).find(Student.class);
+            if (studentList.size() != 0)
+                student1 = studentList.get(0);
+            path = student1.getImagePath();
+        }
         fix_image = findViewById(R.id.circle_image);
         fill_id = findViewById(R.id.fill_id);
         fill_name = findViewById(R.id.fill_name);
@@ -143,10 +155,16 @@ public class Fix_detail extends BaseActivity implements View.OnClickListener,Eas
         if (flag == 1) {
             student1.save();
             //Toast.makeText(this, ""+student.isSaved(), Toast.LENGTH_SHORT).show();
-            list_adapter.notifyDataSetChanged();
             //Toast.makeText(context, "" + students.size(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context,MainActivity.class);
-            startActivity(intent);
+            if (flag2_log==1) {
+                list_adapter.notifyDataSetChanged();
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(context,Show_Student.class);
+                intent.putExtra("fixnumber",student1.getStudent_number());
+                startActivity(intent);
+            }
 
         }
     }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="20dp"
     android:orientation="vertical"
-    tools:context=".FindStudent">
+    tools:context=".Activity.FindStudent">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,7 +20,7 @@
             android:layout_height="45dp" />
         <EditText
             android:id="@+id/fill_id"
-            android:hint="请输入要查找学生的学号"
+            android:hint="请输入要查找学生的学号或姓名"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent" />

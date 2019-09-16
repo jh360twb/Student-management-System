@@ -1,10 +1,9 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,17 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sqlitetest.Adapter.find_Adapter;
-import com.example.sqlitetest.Table.Student;
+import com.example.sqlitetest.Bean.Saved_Student;
+import com.example.sqlitetest.R;
+import com.example.sqlitetest.Bean.Student;
 
-import java.io.File;
+import org.litepal.crud.DataSupport;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.sqlitetest.FindStudent.findStudentList;
-import static com.example.sqlitetest.FindStudent.find_adapter;
-import static com.example.sqlitetest.MainActivity.list_adapter;
-import static com.example.sqlitetest.MainActivity.students;
+import static com.example.sqlitetest.Activity.FindStudent.findStudentList;
+import static com.example.sqlitetest.Activity.FindStudent.find_adapter;
+import static com.example.sqlitetest.Activity.MainActivity.list_adapter;
+import static com.example.sqlitetest.Activity.MainActivity.students;
 
 public class ShowStudent extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "123";
@@ -127,6 +127,7 @@ public class ShowStudent extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         student.delete();
+                        DataSupport.deleteAll(Saved_Student.class,"account=?",student.getStudent_number());
                         if (position == -1){
                             find_adapter.notifyDataSetChanged();
                             Intent intent = new Intent(context,MainActivity.class);

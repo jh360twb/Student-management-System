@@ -1,29 +1,25 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sqlitetest.Adapter.list_Adapter;
-import com.example.sqlitetest.Table.Student;
+import com.example.sqlitetest.R;
+import com.example.sqlitetest.Bean.Student;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -31,10 +27,23 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.sqlitetest.Activity.Login.flag1_log;
+import static com.example.sqlitetest.Activity.Login.flag2_log;
+import static com.example.sqlitetest.Activity.Login.flag_right;
+
 //主要知识点:litepal的增删查改,recyclerview的数据传递;
 //一些小知识点:侧滑菜单,menu的使用,spinner的使用,调用相册等;
-//花费了2天多去做这个小项目,UI完善,bug改完时间2019年7月23日16:31:46
-//加上布局一共2000行左右
+//第一版做完2019年7月23日16:31:46(花了2天半)
+//第二版更新时间2019年9月14日16:46:23(花了2天)
+//涉及的知识点:intent的数据传输,checkbox的运用,MD5加密等;
+//更新之后加的功能:
+//登录,注册(分为管理员登录和普通学生登录)
+//密码管理经过MD5加密
+//查询功能可以通过学号或名字查询(原来只能通过学号查询)
+//添加退出登录功能
+//添加记住密码,修改密码功能
+//添加用户名自动补全功能
+// ^.^
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -62,19 +71,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ininav();
         iniRecyclerview();
         initdata();
-        init();
     }
-
-    private void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        }
-    }
-
 
     @Override
     public Object getLastCustomNonConfigurationInstance() {
@@ -103,13 +100,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.add:
-                        //Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(mcontext, AddStudent.class);
-                        startActivity(intent);
-                        LitePal.getDatabase();
-                        drawerLayout.closeDrawer(navigationView);
-                        break;
                     case R.id.find:
                         Intent intent1 = new Intent(mcontext, FindStudent.class);
                         startActivity(intent1);
@@ -129,6 +119,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         builder.show();
                         //drawerLayout.closeDrawer(navigationView);
                         break;
+                    case R.id.quit:
+                        Intent intent2 = new Intent(MainActivity.this,Login.class);
+                        startActivity(intent2);
+                        break;
                     default:
                         break;
                 }
@@ -140,7 +134,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void iniview() {
         open.setImageResource(R.drawable.more);
         title.setText("学生列表");
-        View view = navigationView.getHeaderView(0);
+        //View view = navigationView.getHeaderView(0);
     }
 
     @Override
@@ -167,6 +161,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             presstime = System.currentTimeMillis();
             Log.e("mainactivity",""+System.currentTimeMillis());
         }else{
+            flag2_log=flag1_log=flag_right=0;
             Intent intent = new Intent("offline");
             sendBroadcast(intent);
         }

@@ -1,18 +1,9 @@
-package com.example.sqlitetest;
+package com.example.sqlitetest.Activity;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,23 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.sqlitetest.Table.Student;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.example.sqlitetest.Httlpackage.MD5HTTL;
+import com.example.sqlitetest.R;
+import com.example.sqlitetest.Bean.Student;
+import com.example.sqlitetest.Httlpackage.getPhotoFromPhotoAlbum;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.File;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static com.example.sqlitetest.MainActivity.list_adapter;
-import static com.example.sqlitetest.MainActivity.students;
+import static com.example.sqlitetest.Activity.Login.flag1_log;
+import static com.example.sqlitetest.Activity.MainActivity.list_adapter;
+import static com.example.sqlitetest.Activity.MainActivity.students;
 
 public class AddStudent extends BaseActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks {
     private static final String[] spinner_arr1 = {"大一", "大二", "大三", "大四"};
@@ -51,6 +40,7 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
     private CircleImageView circleImageView;
     private EditText fill_name;
     private EditText fill_id;
+    private EditText IDpassword;
     private ImageView back;
     private TextView title;
     private Button save_mess;
@@ -61,10 +51,7 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
     private Spinner grade_spinner;
     private Spinner major_spinner;
     private String mess;
-    private static final int REQUEST_OPEN_ALBUM = 1;
-    private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private String cameraSavePath;//拍照照片路径
-    private Uri uri;//照片uri
+    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String photoPath = null;
 
     @Override
@@ -74,6 +61,7 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
         circleImageView = findViewById(R.id.circle_image);
         fill_name = findViewById(R.id.fill_name);
         fill_id = findViewById(R.id.fill_id);
+        IDpassword = findViewById(R.id.IDpassword);
         grade_spinner = findViewById(R.id.grade_spinner);
         major_spinner = findViewById(R.id.major_spinner);
         save_mess = findViewById(R.id.save_message);
@@ -85,15 +73,14 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
         save_mess.setOnClickListener(this);
         circleImageView.setOnClickListener(this);
         iniView();
-        cameraSavePath = Environment.getExternalStorageDirectory().getPath() + "/" + System.currentTimeMillis() + ".jpg";
-//        Save();
+//      Save();
     }
 
     private void goPhotoAlbum() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, 1);
     }
 
 
@@ -109,6 +96,7 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
             Toast("学号位数规定为12位");
             flag = 0;
         }
+        //不能和已存在的一致
         List<Student> findStudentList1 = DataSupport.where("student_number=?",fill_id.getText().toString()).find(Student.class);
         if (findStudentList1.size() != 0){
             Toast("该学号的学生已存在");
@@ -126,15 +114,24 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
         }else {
             student.setImagePath(photoPath);
         }
+        if (IDpassword.getText().toString().length()<6){
+            Toast("密码应不小于六位");
+            flag =0;
+        }else{
+            //密码通过MD5加密存入数据库
+            student.setID_password(MD5HTTL.md5(IDpassword.getText().toString()));
+            Log.e(TAG,student.getID_password());
+        }
         if (flag == 1) {
             student.save();
-            Log.e(TAG, ""+student.getImagePath());
+            //Log.e(TAG, ""+student.getImagePath());
             // Toast.makeText(this, ""+student.isSaved(), Toast.LENGTH_SHORT).show();
             students.add(student);
-            list_adapter.notifyDataSetChanged();
-            //Toast.makeText(context, ""+students.size(), Toast.LENGTH_SHORT).show();
-            finish();
-
+            //list_adapter.notifyDataSetChanged();
+            //注册完毕之后跳转
+            Intent intent = new Intent(context,Show_Student.class);
+            intent.putExtra("number",student.getStudent_number());
+            startActivity(intent);
         }
     }
 
@@ -188,20 +185,20 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
                 //finish();
                 break;
             case R.id.open_nav:
-                Intent intent1 = new Intent(context,MainActivity.class);
+                Intent intent1 = new Intent(context,Login.class);
                 startActivity(intent1);
                 break;
-            case R.id.circle_image:
-                //调用相册
-                getPermission();
-                goPhotoAlbum();
-                break;
+                case R.id.circle_image:
+                    //调用相册
+                    getPermission();
+                    goPhotoAlbum();
+                    break;
             default:
         }
     }
     @Override
     public void onBackPressed() {
-        Intent intent1 = new Intent(context,MainActivity.class);
+        Intent intent1 = new Intent(context,Login.class);
         startActivity(intent1);
     }
 
@@ -235,15 +232,6 @@ public class AddStudent extends BaseActivity implements View.OnClickListener,Eas
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                photoPath = String.valueOf(cameraSavePath);
-            } else {
-                photoPath = uri.getEncodedPath();
-            }
-            Log.d("拍照返回图片路径:", photoPath);
-            Glide.with(AddStudent.this).load(photoPath).into(circleImageView);
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {
             photoPath = getPhotoFromPhotoAlbum.getRealPathFromUri(this, data.getData());
             Glide.with(AddStudent.this).load(photoPath).into(circleImageView);
         }
