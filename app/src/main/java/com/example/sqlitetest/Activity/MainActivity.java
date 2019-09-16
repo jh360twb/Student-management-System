@@ -120,6 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         //drawerLayout.closeDrawer(navigationView);
                         break;
                     case R.id.quit:
+                        flag2_log = 0;
                         Intent intent2 = new Intent(MainActivity.this,Login.class);
                         startActivity(intent2);
                         break;

@@ -22,6 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.sqlitetest.Activity.FindStudent.findStudentList;
 import static com.example.sqlitetest.Activity.FindStudent.find_adapter;
+import static com.example.sqlitetest.Activity.Login.flag2_log;
 import static com.example.sqlitetest.Activity.MainActivity.list_adapter;
 import static com.example.sqlitetest.Activity.MainActivity.students;
 
@@ -95,6 +96,7 @@ public class ShowStudent extends BaseActivity implements View.OnClickListener {
     }
     @Override
     public void onBackPressed() {
+
         Intent intent1 = new Intent(context,MainActivity.class);
         startActivity(intent1);
     }
@@ -102,6 +104,7 @@ public class ShowStudent extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.open_nav:
+
                 Intent intent1 = new Intent(context,MainActivity.class);
                 startActivity(intent1);
                 break;
